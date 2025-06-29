@@ -33,7 +33,7 @@ This project uses Docker Compose to set up a local Kafka environment, including 
 2.  **Start the Docker Compose services:**
 
     ```bash
-    docker compose -f compose.yaml up -d
+    docker compose -f docker/docker-compose.yaml up -d
     ```
 
     This command will start the following services:

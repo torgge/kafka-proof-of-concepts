@@ -2,6 +2,17 @@
 
 This project is a Spring Boot application demonstrating Kafka integration with Avro serialization. It includes a Kafka producer that sends messages to different Kafka topics using Avro-generated keys and values.
 
+## Table of Contents
+
+*   [Prerequisites](#prerequisites)
+*   [Getting Started](#getting-started)
+*   [Kafka Setup (Docker Compose)](#kafka-setup-docker-compose)
+*   [Workflow](#workflow)
+*   [Running the Application](#running-the-application)
+*   [API Endpoints](#api-endpoints)
+*   [Avro Schemas](#avro-schemas)
+*   [Kafka UI](#kafka-ui)
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -37,10 +48,10 @@ This project uses Docker Compose to set up a local Kafka environment, including 
     ```
 
     This command will start the following services:
-    *   `kafka-k6`: Kafka broker
-    *   `kafka-ui-k6`: Web UI for managing Kafka (accessible at `http://localhost:8080`)
-    *   `rest-proxy-k6`: Confluent REST Proxy for Kafka
-    *   `schema-registry-k6`: Confluent Schema Registry
+    *   `kafka`: Kafka broker
+    *   `kafka-ui`: Web UI for managing Kafka (accessible at `http://localhost:8080`)
+    *   `rest-proxy`: Confluent REST Proxy for Kafka
+    *   `schema-registry`: Confluent Schema Registry
 
 3.  **Verify services are running:**
 
@@ -88,7 +99,7 @@ graph TD
 Once the Kafka services are up and running, you can start the Spring Boot application:
 
 ```bash
-java -jar build/libs/kafka-0.0.1-SNAPSHOT.jar
+./gradlew bootRun
 ```
 
 The application will start on `http://localhost:8090`.
@@ -129,3 +140,27 @@ The project uses Avro for serializing Kafka message keys and values. The Avro sc
 *   `stock-value.avsc`: Defines the schema for `StockValue`.
 
 These schemas are used by the `gradle-avro-plugin` to generate corresponding Java classes in `build/generated-main-avro-java/`.
+
+## Kafka UI ([UI for Apache Kafka](https://github.com/provectus/kafka-ui))
+
+You can access the Kafka UI at `http://localhost:8080/ui`.
+
+### `com.bonespirito.stock.v1` Topic Messages
+
+#### Key for `com.bonespirito.stock.v1`
+
+![Kafka UI: Key for stock.v1 topic message](assets/Screenshot%202025-06-29%20at%2013.24.24.png)
+
+#### Value for `com.bonespirito.stock.v1`
+
+![Kafka UI: Value for stock.v1 topic message](assets/Screenshot%202025-06-29%20at%2013.24.37.png)
+
+### `com.bonespirito.stock.v2` Topic Messages
+
+#### Key for `com.bonespirito.stock.v2`
+
+![Kafka UI: Key for stock.v2 topic message](assets/Screenshot%202025-06-29%20at%2013.19.41.png)
+
+#### Value for `com.bonespirito.stock.v2`
+
+![Kafka UI: Value for stock.v2 topic message](assets/Screenshot%202025-06-29%20at%2013.20.05.png)

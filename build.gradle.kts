@@ -30,18 +30,23 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter:3.5.3")
-	implementation("org.springframework.boot:spring-boot-starter-web:3.5.3")
+	implementation("org.springframework.boot:spring-boot-starter:${project.property("spring-boot-starter.version")}")
+	implementation("org.springframework.boot:spring-boot-starter-web:${project.property("spring-boot-starter.version")}")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.kafka:spring-kafka:3.2.3")
-	implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka:4.1.3")
-	implementation("org.apache.avro:avro:1.12.0")
-	implementation("io.confluent:kafka-avro-serializer:7.6.0")
-	implementation("org.springframework.boot:spring-boot-starter-actuator:3.5.3")
-	developmentOnly("org.springframework.boot:spring-boot-docker-compose:3.5.3")
-	testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
+	implementation("org.springframework.kafka:spring-kafka:${project.property("spring-kafka.version")}")
+	implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka:" +
+			"${project.property("spring-cloud-stream-binder-kafka.version")}")
+	implementation("org.apache.avro:avro:${project.property("avro.version")}")
+	implementation("io.confluent:kafka-avro-serializer:${project.property("kafka-avro-serializer.version")}")
+	implementation("org.springframework.boot:spring-boot-starter-actuator:" +
+			"${project.property("spring-boot-starter-actuator.version")}")
+	developmentOnly("org.springframework.boot:spring-boot-docker-compose:" +
+			"${project.property("spring-boot-docker-compose.version")}")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:" +
+			"${project.property("spring-boot-starter-test.version")}")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testImplementation("org.springframework.kafka:spring-kafka-test:3.2.3")
+	testImplementation("org.springframework.kafka:spring-kafka-test:" +
+			"${project.property("spring-kafka-test.version")}")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   application:
     name: kafka
   kafka:
@@ -25,5 +27,7 @@ spring:
     compose:
       file:
         - ./docker/docker-compose.yaml
+      readiness:
+        wait: never
 server:
   port: 8090

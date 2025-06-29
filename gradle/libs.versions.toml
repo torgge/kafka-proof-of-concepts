@@ -1,0 +1,31 @@
+[versions]
+kotlin = "1.9.25"
+springBoot = "3.5.3"
+springDependencyManagement = "1.1.7"
+avroPlugin = "1.9.1"
+springCloud = "2024.0.3"
+avro = "1.12.0"
+kafkaAvroSerializer = "7.6.0"
+
+[libraries]
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
+spring-cloud-stream-binder-kafka = { module = "org.springframework.cloud:spring-cloud-stream-binder-kafka" }
+apache-avro = { module = "org.apache.avro:avro", version.ref = "avro" }
+confluent-kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "kafkaAvroSerializer" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-docker-compose = { module = "org.springframework.boot:spring-boot-docker-compose" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
+spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "springCloud" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+avro = { id = "com.github.davidmc24.gradle.plugin.avro", version.ref = "avroPlugin" }

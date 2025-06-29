@@ -1,0 +1,100 @@
+name: kafka-proof-of-concept
+
+volumes:
+  kafka_data:
+    driver: local
+
+services:
+  kafka-k6:
+    image: bitnami/kafka:4.0.0
+    container_name: kafka-k6
+    hostname: kafka-k6
+    ports:
+      - "9092:9092" # For host access to EXTERNAL listener
+      - "9094:9094" # Alternative port for external access
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      # Fixed listeners configuration
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,CONTROLLER://:9091,EXTERNAL://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # Proper advertised listeners for both internal and external access
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-k6:9093,EXTERNAL://localhost:9092
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:9091
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_CFG_NUM_PARTITIONS=5
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/kafka/bin/kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app_network
+
+  kafka-ui-k6:
+    container_name: kafka-ui-k6
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      kafka-k6:
+        condition: service_healthy
+      schema-registry-k6:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: 'local-kafka'
+      # Use internal PLAINTEXT listener for container-to-container communication
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'kafka-k6:9093'
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: 'http://schema-registry-k6:8081'
+    networks:
+      - app_network
+
+  rest-proxy-k6:
+    image: confluentinc/cp-kafka-rest:latest
+    depends_on:
+      kafka-k6:
+        condition: service_healthy
+    ports:
+      - 8082:8082
+    hostname: rest-proxy-k6
+    container_name: rest-proxy-k6
+    environment:
+      KAFKA_REST_HOST_NAME: rest-proxy-k6
+      # Use internal PLAINTEXT listener
+      KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka-k6:9093'
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+    networks:
+      - app_network
+
+  schema-registry-k6:
+    image: confluentinc/cp-schema-registry:latest
+    hostname: schema-registry-k6
+    depends_on:
+      kafka-k6:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry-k6
+      # Use internal PLAINTEXT listener
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka-k6:9093'
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/subjects"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+networks:
+  app_network:
+    driver: bridge

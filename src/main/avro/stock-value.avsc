@@ -1,0 +1,34 @@
+{
+  "type": "record",
+  "name": "StockValue",
+  "namespace": "com.bonespirito.kafka.avro",
+  "fields": [
+    {
+      "name": "skuCode",
+      "type": "string"
+    },
+    {
+      "name": "distributionCenter",
+      "type": "string"
+    },
+    {
+      "name": "storageLocation",
+      "type": "string"
+    },
+    {
+      "name": "quantity",
+      "type": "long"
+    },
+    {
+      "name": "storageLocationType",
+      "type": {
+        "type": "enum",
+        "name": "StorageLocationType",
+        "symbols": [
+          "INTERNAL",
+          "EXTERNAL"
+        ]
+      }
+    }
+  ]
+}

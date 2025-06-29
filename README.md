@@ -54,11 +54,33 @@ This project uses Docker Compose to set up a local Kafka environment, including 
 
 ```mermaid
 graph TD
-    A[Producer] --> B(Kafka Broker);
-    B --> C[Consumer];
-    A --> D[Schema Registry];
-    C --> D;
-    B --> E[Kafka UI];
+    subgraph Application Endpoints
+        A1[POST /stock/v1]
+        A2[POST /stock/v2]
+    end
+
+    subgraph Kafka Ecosystem
+        P[Producer]
+        K[Kafka Broker]
+        SR[Schema Registry]
+        T1[Topic: com.bonespirito.stock.v1]
+        T2[Topic: com.bonespirito.stock.v2]
+        KUI[Kafka UI]
+    end
+
+    A1 --> P
+    A2 --> P
+
+    P --> K
+
+    K --> T1
+    K --> T2
+
+    P -- Avro Serialization --> SR
+    T1 -- Avro Schema --> SR
+    T2 -- Avro Schema --> SR
+
+    K --> KUI
 ```
 
 ## Running the Application

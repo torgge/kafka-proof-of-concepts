@@ -50,6 +50,17 @@ This project uses Docker Compose to set up a local Kafka environment, including 
     docker ps
     ```
 
+## Workflow
+
+```mermaid
+graph TD
+    A[Producer] --> B(Kafka Broker);
+    B --> C[Consumer];
+    A --> D[Schema Registry];
+    C --> D;
+    B --> E[Kafka UI];
+```
+
 ## Running the Application
 
 Once the Kafka services are up and running, you can start the Spring Boot application:

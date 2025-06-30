@@ -1,0 +1,5 @@
+{
+  "type": "string",
+  "name": "StockKeyV1",
+  "namespace": "com.bonespirito.supply.stock"
+}

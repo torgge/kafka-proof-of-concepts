@@ -1,7 +1,7 @@
 {
   "type": "record",
-  "name": "StockKey",
-  "namespace": "com.bonespirito.kafka.avro",
+  "name": "StockValueV2",
+  "namespace": "com.bonespirito.supply.stock",
   "fields": [
     {
       "name": "skuCode",
@@ -14,6 +14,10 @@
     {
       "name": "storageLocation",
       "type": "string"
+    },
+    {
+      "name": "quantity",
+      "type": "long"
     },
     {
       "name": "storageLocationType",

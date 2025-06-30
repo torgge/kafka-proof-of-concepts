@@ -1,9 +1,10 @@
 package com.bonespirito.kafka.controller
 
-import com.bonespirito.kafka.avro.StockKey
-import com.bonespirito.kafka.avro.StorageLocationType
-import com.bonespirito.kafka.avro.StockValue
 import com.bonespirito.kafka.producer.StockProducer
+import com.bonespirito.supply.stock.StockKeyV2
+import com.bonespirito.supply.stock.StockValueV1
+import com.bonespirito.supply.stock.StockValueV2
+import com.bonespirito.supply.stock.StorageLocationType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -14,12 +15,10 @@ class StockController(private val stockProducer: StockProducer) {
 
     @PostMapping("/v1")
     fun sendToV1() {
-        val stockValue = StockValue.newBuilder()
+        val stockValue = StockValueV1.newBuilder()
             .setSkuCode("SKU-" + (10000..99999).random())
             .setDistributionCenter("DC-" + (100..999).random())
-            .setStorageLocation("SL-" + (1000..9999).random())
             .setQuantity((1L..1000L).random())
-            .setStorageLocationType(StorageLocationType.INTERNAL)
             .build()
         stockProducer.sendToV1(stockValue)
     }
@@ -32,13 +31,13 @@ class StockController(private val stockProducer: StockProducer) {
         val sl = "SL-" + (1000..9999).random()
         val slType = listOf(StorageLocationType.INTERNAL, StorageLocationType.EXTERNAL).random()
 
-        val stockKey = StockKey.newBuilder()
+        val stockKey = StockKeyV2.newBuilder()
             .setSkuCode(sku)
             .setDistributionCenter(dc)
             .setStorageLocation(sl)
             .setStorageLocationType(slType)
             .build()
-        val stockValue = StockValue.newBuilder()
+        val stockValue = StockValueV2.newBuilder()
             .setSkuCode(sku)
             .setDistributionCenter(dc)
             .setStorageLocation(sl)

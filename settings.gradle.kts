@@ -1,1 +1,1 @@
-rootProject.name = "kafka"
+rootProject.name = "kafka-proof-of-concept"

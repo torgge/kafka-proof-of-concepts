@@ -136,8 +136,10 @@ The application exposes the following REST endpoints for producing Kafka message
 
 The project uses Avro for serializing Kafka message keys and values. The Avro schema definitions are located in `src/main/avro/`:
 
-*   `stock-key.avsc`: Defines the schema for `StockKey`.
-*   `stock-value.avsc`: Defines the schema for `StockValue`.
+*   `stock-key-v1.avsc`: Defines the schema for `StockKey` version 1.
+*   `stock-key-v2.avsc`: Defines the schema for `StockKey` version 2.
+*   `stock-value-v1.avsc`: Defines the schema for `StockValue` version 1.
+*   `stock-value-v2.avsc`: Defines the schema for `StockValue` version 2.
 
 These schemas are used by the `gradle-avro-plugin` to generate corresponding Java classes in `build/generated-main-avro-java/`.
 
